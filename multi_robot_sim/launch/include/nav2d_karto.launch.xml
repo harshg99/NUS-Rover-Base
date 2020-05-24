@@ -1,0 +1,25 @@
+<launch>
+<arg name="robot_name" default=""/>
+<arg name="inverted_laser" default="false"/>
+<arg name="global_frame_id" default="map"/>
+<arg name="map_topic" default="/map"/>
+<arg name="id" default="0"/>
+
+<param name="laser_frame" value="/$(arg robot_name)/camera_depth_frame"/>
+<param name="robot_frame" value="/$(arg robot_name)/base_link"/>
+<param name="odometry_frame" value="/$(arg robot_name)/odom"/>
+<param name="offset_frame" value="/$(arg robot_name)/offset"/>
+<param name="map_frame" value="/$(arg global_frame_id)"/>
+
+<param name="map" value="$(arg map_topic)"/>
+<param name="map_metadata" value="/$(arg robot_name)/map_metadata"/>
+<param name="scan" value="/$(arg robot_name)/scan"/>
+<param name="robot_id" value="$(arg id)"/>
+<node name="Mapper" pkg="nav2d_karto" type="mapper">
+        <remap from="scan" to="/$(arg robot_name)/scan"/>
+        <remap from="karto_in" to="/shared_scans_r2"/>
+        <remap from="karto_out" to="/shared_scans_r1"/>
+        <rosparam file="$(find multi_robot_sim)/param/nav2d_karto_mapper.yaml"/>
+</node>
+
+</launch>

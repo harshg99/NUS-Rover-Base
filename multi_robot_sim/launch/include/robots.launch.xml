@@ -1,0 +1,64 @@
+<launch>
+  <!-- No namespace here as we will share this description.
+       Access with slash at the beginning -->
+  <!-- <param name="robot_description"
+    command="$(find xacro)/xacro.py $(find turtlebot_description)/robots/turtlebot.urdf.xacro" /> -->
+
+  <!-- BEGIN ROBOT 1-->
+  <group ns="robot1">
+    <arg name="initial_pose_x" value="1" />
+    <arg name="initial_pose_y" value="0" />
+    <arg name="initial_pose_z" value="0" />
+    <arg name="initial_pose_yaw" value="-1.5" />
+
+    <param name="map_merge/init_pose_x" value="$(arg initial_pose_x) "/>
+    <param name="map_merge/init_pose_y" value="$(arg initial_pose_y)"/>
+    <param name="map_merge/init_pose_z" value="$(arg initial_pose_z)"/>
+    <param name="map_merge/init_pose_yaw" value="$(arg initial_pose_yaw)"/>
+    <!-- <param name="tf_prefix" value="robot1_tf" /> -->
+    <include file="$(find multi_robot_sim)/launch/include/robot.launch.xml" >
+      <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
+      <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
+      <arg name="initial_pose_z" value="$(arg initial_pose_z)" />
+      <arg name="initial_pose_yaw" value="$(arg initial_pose_yaw)" />
+      <arg name="robot_name"  value="robot1" />
+    </include>
+  </group>
+
+  <!--BEGIN ROBOT 2-->
+  <!--group ns="robot2">
+  <arg name="initial_pose_x" value="-1" />
+  <arg name="initial_pose_y" value="0" />
+  <arg name="initial_pose_z" value="0" />
+  <arg name="initial_pose_yaw" value="-1.5" />
+
+  <param name="map_merge/init_pose_x" value="$(arg initial_pose_x) "/>
+  <param name="map_merge/init_pose_y" value="$(arg initial_pose_y)"/>
+  <param name="map_merge/init_pose_z" value="$(arg initial_pose_z)"/>
+  <param name="map_merge/init_pose_yaw" value="$(arg initial_pose_yaw)"/-->
+    <!--<param name="tf_prefix" value="robot2_tf" /-->
+    <!--include file="$(find multi_robot_sim)/launch/include/robot.launch.xml" >
+      <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
+      <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
+      <arg name="initial_pose_z" value="$(arg initial_pose_z)" />
+      <arg name="initial_pose_yaw" value="$(arg initial_pose_yaw)" />
+      <arg name="robot_name"  value="robot2" />
+    </include>
+ </group-->
+
+
+
+<node pkg="multirobot_map_merge" type="map_merge" respawn="false" name="map_merge" output="screen">
+  <param name="robot_map_topic" value="map"/>
+  <param name="robot_namespace" value=""/>
+  <param name="merged_map_topic" value="/map"/>
+  <param name="world_frame" value="/map"/>
+  <param name="known_init_poses" value="true"/>
+  <param name="merging_rate" value="0.5"/>
+  <param name="discovery_rate" value="0.05"/>
+  <param name="estimation_rate" value="0.1"/>
+  <param name="estimation_confidence" value="1.0"/>
+</node>
+
+
+</launch>

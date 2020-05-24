@@ -1,0 +1,31 @@
+<launch>
+<arg name="robot_name" default=""/>
+<arg name="erg_frontier_topic" default="erg_frontier_info"/>
+    <node pkg="ergodic_explore" type="frontier_publish" respawn="true" name="frontier_publish" output="screen">
+        <param name="robot_base_frame" value="/$(arg robot_name)/base_footprint"/>
+        <!--param name="costmap_topic" value="/$(arg robot_name)/move_base/global_costmap/costmap"/>
+        <param name="costmap_updates_topic" value="/$(arg robot_name)/move_base/global_costmap/costmap_updates"/-->
+        <param name="costmap_topic" value="/$(arg robot_name)/map"/>
+        <param name="costmap_updates_topic" value="/$(arg robot_name)/map_updates"/>
+        <param name="visualize" value="true"/>
+        <param name="planner_frequency" value="0.25"/>
+        <param name="progress_timeout" value="10.0"/>
+        <param name="potential_scale" value="3.0"/>
+        <param name="orientation_scale" value="0.0"/>
+        <param name="gain_scale" value="1.0"/>
+        <param name="transform_tolerance" value="0.3"/>
+        <param name="min_frontier_size" value="0.3"/>
+        <param name="frontier_info_topic" value="/$(arg robot_name)/$(arg erg_frontier_topic)"/>
+        <remap from="move_base" to="/$(arg robot_name)/move_base"/>
+    </node>
+
+    <node pkg="ergodic_explore" type="infomap" respawn="false" name="infomap" output="screen">
+        <param name="regions_topic" value="/$(arg robot_name)/$(arg erg_frontier_topic)"/>
+        <param name="infomap_topic" value="/$(arg robot_name)/infomap"/>
+        <param name="update_frequency" value="1"/>
+        <param name="gaussian_variance_inflation" value="0.1"/>
+        <param name="quantisation" value="100"/>
+        <param name="scale" value="1.0"/>
+    </node>
+</launch>
+
